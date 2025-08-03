@@ -10,6 +10,8 @@ export interface IUser extends Document {
   orderHistory: IOrderSummary[];
   createdAt?: Date;
   updatedAt?: Date;
+  resetToken?: String;
+  resetTokenExpire?: Number;
 }
 
 interface IAddress {
@@ -76,6 +78,8 @@ const UserSchema = new Schema<IUser>(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
+    resetToken: {type: String, required: false},
+    resetTokenExpire: {type: Number, required: false},
     role: {
       type: String,
       enum: ['user', 'admin'],

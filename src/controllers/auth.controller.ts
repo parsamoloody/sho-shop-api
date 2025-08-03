@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import UserModel from '../models/user.model';
+import crypto from 'crypto'
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import { ObjectId } from 'mongoose';
+import { sendResetEmail } from '../utils/email';
 dotenv.config()
 const SECRET = process.env.AUTH_SECRET_16_TO_HEX;
 
@@ -21,7 +23,6 @@ export const signup = async (req: Request, res: Response) => {
 
     const exists = await UserModel.findOne({ email: email });
     if (exists) return res.status(400).json({ message: 'email already taken' });
-    console.log("is exists", exists)
 
     const hashed = await bcrypt.hash(password, 10);
 
@@ -37,15 +38,16 @@ export const signup = async (req: Request, res: Response) => {
     })
     newUser.save()
       .then((res) => {
-        console.log("user data successfuly", res) 
+        console.log("user data successfully", res)
         newUserId = (res._id as any).toString()
       })
       .catch((err) => {
         console.log("error on store data to dbb", err)
       })
     let newUserId = await (newUser._id as ObjectId).toString()
-
-    res.status(201).json({ message: 'User created', id: newUserId });
+    const token = jwt.sign({ id: newUserId, email: newUser.email, role: newUser.role, name: newUser.name }, SECRET, { expiresIn: '1h' });
+    const a = res.status(201).json({ message: 'User created', token });
+    return a
   } catch (e: any) {
     res.status(500).json({ message: 'Internal server error' })
     throw new Error('erro signup')
@@ -54,15 +56,13 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    console.log(req.body)
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email });
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user) return res.status(401).json({ message: 'User not found, please signup' });
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: 'Invalid password' });
     const id = user.id.toString()
     const token = jwt.sign({ id: id, email: user.email, role: user.role, name: user.name }, SECRET, { expiresIn: '1h' });
-    console.log("token is", token)
     res.status(200).json({ token });
   } catch (e: any) {
     res.status(500).json({ message: 'Internal server error' })
@@ -72,10 +72,28 @@ export const login = async (req: Request, res: Response) => {
 export const me = (req: Request, res: Response) => {
   try {
     const user = (req as any).user;
-    console.log(user)
     res.status(200).json({ user });
   }
   catch {
     res.status(500).json({ message: "Internal server errorr" })
   }
 };
+
+export const resetPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const user = await UserModel.findOne({ email });
+  if (!user) return res.status(400).json({ message: 'No user with that email' });
+
+  const token = crypto.randomBytes(32).toString('hex');
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+  user.resetToken = hashedToken;
+  user.resetTokenExpire = Date.now() + 3600000;
+  await user.save();
+
+  const resetLink = `http://yourfrontend.com/auth/reset-password/${token}`;
+
+  await sendResetEmail(user.email, resetLink);
+
+  res.json({ message: 'Password reset email sent' });
+}
