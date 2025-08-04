@@ -28,12 +28,11 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 
 export function checkApiKey(req: Request, res: Response, next: NextFunction) {
     const clientKey = req.headers['x-api-key']
-    const serverKey = process.env.API_SECRET_KEY
-    if (!serverKey) throw new Error('API_SECRET_KEY not definde')
+    const serverKey = process.env.WEBHOOK_SECRET_KEY
+    if (!serverKey) throw new Error('WEBHOOK_SECRET_KEY not defined')
 
     if (!clientKey || clientKey !== serverKey) {
         return res.status(401).json({ message: 'Unauthorized: Invalid API key' })
     }
-
     next()
 }

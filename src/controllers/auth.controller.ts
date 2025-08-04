@@ -50,7 +50,7 @@ export const signup = async (req: Request, res: Response) => {
     return a
   } catch (e: any) {
     res.status(500).json({ message: 'Internal server error' })
-    throw new Error('erro signup')
+    throw new Error('error signup')
   }
 };
 

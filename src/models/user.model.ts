@@ -1,41 +1,5 @@
 import mongoose, { Schema, model, models, Document } from 'mongoose';
-
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-  role: 'user' | 'admin';
-  addresses: IAddress[];
-  cart: ICartItem[];
-  orderHistory: IOrderSummary[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  resetToken?: String;
-  resetTokenExpire?: Number;
-}
-
-interface IAddress {
-  fullName: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  phone?: string;
-}
-
-interface IOrderSummary {
-  orderId: mongoose.Types.ObjectId;
-  total: number;
-  status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
-  createdAt: Date;
-}
-
-interface ICartItem {
-  product: mongoose.Types.ObjectId;
-  quantity: number;
-  size?: string;
-  color?: string;
-}
+import { IAddress, ICartItem, IOrderSummary, IUser } from '../types/type';
 
 const addressSchema = new Schema<IAddress>(
   {
@@ -93,4 +57,4 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-export default mongoose.model<IUser>('fuser', UserSchema);
+export default mongoose.model<IUser>('users', UserSchema);

@@ -4,7 +4,7 @@ import { createArticle, getArticle } from "../controllers/article.controller";
 
 const router = Router()
 
-router.post("/write-article", checkApiKey, createArticle )
-router.get("/article/:id", getArticle)
-router.get("/article", getArticle)
+router.post("/create", checkApiKey, createArticle )
+router.get("/get-one/:id", getArticle)
+router.get("/get-all", getArticle)
 export default router
