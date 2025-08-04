@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import authRouter from "./router/auth.route";
 import articleRouter from "./router/article.route";
 import productRouter from "./router/product.route";
+import userRouter from "./router/user.route";
 import { connectDB } from './lib/connection';
 import { errorHandler } from "./middlewares/errorHandler";
 var cors = require('cors')
@@ -20,7 +21,8 @@ app.use(errorHandler);
 
 app.use('/api/auth', authRouter);
 app.use('/api/post', articleRouter);
-app.use('/api/product', productRouter)
+app.use('/api/product', productRouter);
+app.use('/api/user', userRouter)
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running at http://localhost:${PORT}`);
