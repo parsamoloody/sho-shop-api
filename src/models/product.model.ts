@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, SchemaTypes } from "mongoose";
+import mongoose, { Document, Schema, SchemaTypes, Types } from "mongoose";
 import { IDiscount, IPrice, IProductDocument } from "../types/type";
 
 const discountSchema = new Schema<IDiscount>({
@@ -37,10 +37,16 @@ const productSchema = new Schema<IProductDocument>({
         type: priceSchema,
         required: true
     },
-    category: {
-        type: [String],
-        default: []
-    },
+    category: [{
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: 'category'
+    }],
+    subCategory: [{
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: 'subcategory'
+    }],
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "users",
@@ -49,7 +55,7 @@ const productSchema = new Schema<IProductDocument>({
     editedBy: {
         type: Schema.Types.ObjectId,
         ref: "users",
-        required: true
+        required: false
     }
 },
     {

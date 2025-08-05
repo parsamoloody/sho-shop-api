@@ -45,6 +45,23 @@ interface ICartItem {
   color?: string;
 }
 
+
+// Category type definition (parent)
+
+interface ICategory {
+  name: string;
+  description: string;
+  image: string;
+}
+
+// Subcategory type definition (child)
+interface ISubcategory {
+  name: string;
+  category: Types.ObjectId[];
+  description: string;
+  image: string
+}
+
 // Product type definition
 
 interface IDiscount {
@@ -59,7 +76,8 @@ interface IPrice {
 }
 interface IProductDocument extends Document {
   product_id: string;
-  category: string[];
+  category: Types.ObjectId[];
+  subCategory: Types.ObjectId[];
   name: string;
   description: string;
   price: IPrice;
@@ -77,5 +95,7 @@ export {
   ICartItem,
   IDiscount,
   IPrice,
-  IProductDocument
+  IProductDocument,
+  ICategory,
+  ISubcategory
 }

@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import Product from "../models/product.model";
-import { IProductDocument } from "../types/type";
 import mongoose from "mongoose";
 import userModel from "../models/user.model";
 
 
-// Get Product by ID
+// Get all users
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await userModel.find();
