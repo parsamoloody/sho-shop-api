@@ -10,12 +10,12 @@ const categoryController = createCrudController(
 const subCategoryController = createCrudController(
     subCategoryModel,
     "Subcategory",
-    ["category"]
+    // ["category"]
 );
 const productController = createCrudController(
     productModel,
     "Products",
-    ["category", "subcategory", "User"]
+    // ["category", "subcategory", "User"]
 );
 const userController = createCrudController(
     userModel,

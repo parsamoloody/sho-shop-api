@@ -17,8 +17,6 @@ const cartItemSchema = new Schema<ICartItem>(
   {
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
     quantity: { type: Number, required: true },
-    size: { type: String },
-    color: { type: String },
   },
   { _id: false }
 );
@@ -44,6 +42,7 @@ const UserSchema = new Schema<IUser>(
     password: { type: String, required: true },
     resetToken: {type: String, required: false},
     resetTokenExpire: {type: Number, required: false},
+    profilePicture: { type: String, required: false },
     role: {
       type: String,
       enum: ['user', 'admin'],

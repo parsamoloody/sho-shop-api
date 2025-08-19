@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { categoryController } from '../factory/resolveFactory';
 
-const router = Router();
+const categoryReadRouter = Router();
+const categoryManualRouter = Router();
 
-router.get('/get-all', categoryController.getAll);
-router.get('/get-one/:id', categoryController.getOne)
-router.post('/create', categoryController.create)
-router.patch('/edit/:id', categoryController.update);
-export default router;
+categoryReadRouter.get('/get-all', categoryController.getAll);
+categoryReadRouter.get('/get-one/:id', categoryController.getOne);
+categoryManualRouter.post('/create', categoryController.create);
+categoryManualRouter.patch('/edit/:id', categoryController.update);
+export { categoryReadRouter, categoryManualRouter };

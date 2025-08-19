@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { productController } from '../factory/resolveFactory';
 
-const router = Router();
+const productReadRouter = Router();
+const productManualRouter = Router();
 
-router.post('/create', productController.create);
-router.put('/edit/:id', productController.update);
-router.get('/get-all', productController.getAll);
-router.get('/get-one/:id', productController.getOne)
+productManualRouter.post('/', productController.create);
+productManualRouter.put('/edit/:id', productController.update);
+productReadRouter.get('/get-all', productController.getAll);
+productReadRouter.get('/get-one/:id', productController.getOne);
 
-export default router;
+export { productManualRouter, productReadRouter };

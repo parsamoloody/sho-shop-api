@@ -9,15 +9,22 @@ const categorySchema = new Schema<ISubcategory>({
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
-    image: {
-        type: String,
-        required: true,
+    images: {
+        gallery: {
+            type: [String],
+            required: false
+        },
+        thumbnail: {
+            type: String,
+            required: false
+        }
     },
-    category: [{
+    categories: [{
         type: Schema.Types.ObjectId,
-        ref: 'category',
+        ref: 'categories',
+        required: true
     }]
 })
 let SubCategoryModel: mongoose.Model<ISubcategory>;
@@ -27,4 +34,3 @@ if (mongoose.models[SUB_C_INDEX]) {
     SubCategoryModel = mongoose.model<ISubcategory>(SUB_C_INDEX, categorySchema)
 }
 export default SubCategoryModel = mongoose.model<ISubcategory>(SUB_C_INDEX, categorySchema)
-// export default mongoose.model<ISubcategory>('subcategories', categorySchema)

@@ -51,7 +51,9 @@ export function createCrudController<T>(
         // Create new document
         async create(req, res, next) {
             try {
+                console.log("before create", req.body);
                 const data = await model.create(req.body);
+                console.log("after create", data);
                 res.status(201).json({ success: true, data });
             } catch (error) {
                 next(error);

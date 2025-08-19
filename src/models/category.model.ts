@@ -8,11 +8,17 @@ const categorySchema = new Schema<ICategory>({
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
-    image: {
-        type: String,
-        required: true,
+    images:{
+        gallery: {
+            type: [String],
+            required: false
+        },
+        thumbnail: {
+            type: [String],
+            required: false
+        }
     }
 })
 

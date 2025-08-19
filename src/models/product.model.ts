@@ -37,15 +37,14 @@ const productSchema = new Schema<IProductDocument>({
         type: priceSchema,
         required: true
     },
+    rating: {
+        type: Number,
+        default: 3.5
+    },
     category: [{
         type: Schema.Types.ObjectId,
         default: [],
         ref: 'category'
-    }],
-    subCategory: [{
-        type: Schema.Types.ObjectId,
-        default: [],
-        ref: 'subcategory'
     }],
     createdBy: {
         type: Schema.Types.ObjectId,
@@ -56,10 +55,19 @@ const productSchema = new Schema<IProductDocument>({
         type: Schema.Types.ObjectId,
         ref: "users",
         required: false
+    },
+    images: [{
+        type: String,
+        required: true
+    }],
+    stock: {
+        type: Number,
+        required: true,
+        default: 0
     }
 },
     {
         timestamps: true,
     })
 
-export default mongoose.model<IProductDocument>('products', productSchema)
+export default mongoose.model<IProductDocument>('mahsool', productSchema)

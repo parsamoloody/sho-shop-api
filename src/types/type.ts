@@ -13,6 +13,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   role: 'user' | 'admin';
+  profilePicture: string;
   addresses: IAddress[];
   cart: ICartItem[];
   orderHistory: IOrderSummary[];
@@ -41,25 +42,28 @@ interface IOrderSummary {
 interface ICartItem {
   product: mongoose.Types.ObjectId;
   quantity: number;
-  size?: string;
-  color?: string;
 }
 
 
 // Category type definition (parent)
-
 interface ICategory {
   name: string;
   description: string;
-  image: string;
+  images: {
+    gallery: string[];
+    thumbnail: string;
+  };
 }
 
 // Subcategory type definition (child)
 interface ISubcategory {
   name: string;
-  category: Types.ObjectId[];
   description: string;
-  image: string
+  categories: Types.ObjectId[];
+  images: {
+    gallery: string[];
+    thumbnail: string;
+  };
 }
 
 // Product type definition
@@ -75,13 +79,14 @@ interface IPrice {
   currency: "USD" | "IRR"
 }
 interface IProductDocument extends Document {
-  product_id: string;
   category: Types.ObjectId[];
-  subCategory: Types.ObjectId[];
   name: string;
   description: string;
   price: IPrice;
+  images: string[];
   createdBy: Types.ObjectId,
+  rating: number,
+  stock: number,
   editedBy: Types.ObjectId,
   createdAt: Date;
   updatedAt: Date;
