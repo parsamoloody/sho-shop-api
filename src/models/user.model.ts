@@ -42,7 +42,7 @@ const UserSchema = new Schema<IUser>(
     password: { type: String, required: true },
     resetToken: {type: String, required: false},
     resetTokenExpire: {type: Number, required: false},
-    profilePicture: { type: String, required: false },
+    profilePicture: [{ type: String, required: false }],
     role: {
       type: String,
       enum: ['user', 'admin'],
@@ -50,8 +50,6 @@ const UserSchema = new Schema<IUser>(
       required: true,
     },
     addresses: [addressSchema],
-    cart: [cartItemSchema],
-    orderHistory: [orderSummarySchema],
   },
   { timestamps: true }
 );

@@ -22,7 +22,7 @@ export function createCrudController<T>(
             try {
                 let query = model.find();
                 for (const field of populateFields) {
-                    query = query.populate({path: field, strictPopulate: false});
+                    query = query.populate({ path: field, strictPopulate: false });
                 }
                 const data = await query.exec();
                 res.json({ success: true, data });
@@ -63,7 +63,20 @@ export function createCrudController<T>(
         // Update document
         async update(req, res, next) {
             try {
+                const isExist = await model.findById(req.params.id);
+                if (!isExist) {
+                     await model.create(req.body)
+                        .then((data) => {
+                            res.status(201).json({ success: true, data });
+                        })
+                        .catch((error) => {
+                            next(error);
+                        });
+                        return;
+                }
+
                 const data = await model.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
                 if (!data) {
                     res.status(404).json({ success: false, message: `${resourceName} not found` });
                 }

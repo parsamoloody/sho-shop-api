@@ -6,5 +6,5 @@ const userReadRouter = Router();
 
 userReadRouter.get('/get-all', userController.getAll);
 userReadRouter.get('/get-one/:id', userController.getOne);
-userManualRouter.patch('/edit/:id', userController.update);
+userManualRouter.put('/edit/:id', userController.update);
 export { userManualRouter, userReadRouter };

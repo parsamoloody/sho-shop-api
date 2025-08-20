@@ -11,6 +11,7 @@ import { connectDB } from './lib/connection';
 import { errorHandler } from "./middlewares/errorHandler";
 import imageHandler from "./middlewares/imageHandler";
 import { userManualRouter, userReadRouter } from "./router/user.route";
+import { wishListReadRouter, wishManualRouter } from "./router/wish.router";
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,8 @@ app.use(express.json());
 app.use('/api/upload/image', express.static(path.join(__dirname, process.env.PUBLIC_IMAGE_PATH || "")));
 app.use('/api/product', imageHandler({ type: "Product" }), productManualRouter);
 app.use('/api/user', imageHandler({ type: "User" }), userManualRouter);
+app.use('/api/wishlist', wishManualRouter);
+app.use('/api/wishlist', wishListReadRouter);
 app.use('/api/category', categoryManualRouter);
 app.use('/api/subcategory', subCategoryManualRouter);
 app.use('/api/post', articleRouter);

@@ -3,6 +3,7 @@ import categoryModel from "../models/category.model";
 import productModel from "../models/product.model";
 import subCategoryModel from "../models/subCategory.model";
 import userModel from "../models/user.model";
+import wishModel from "../models/wish.model";
 
 const categoryController = createCrudController(
     categoryModel,
@@ -20,4 +21,8 @@ const productController = createCrudController(
 const userController = createCrudController(
     userModel,
     "User")
-export { categoryController, userController, productController, subCategoryController };
+const wishController = createCrudController(
+    wishModel,
+    "Wish list"
+)
+export { categoryController, userController, productController, subCategoryController, wishController };

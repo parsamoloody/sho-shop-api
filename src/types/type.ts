@@ -13,10 +13,8 @@ interface IUser extends Document {
   email: string;
   password: string;
   role: 'user' | 'admin';
-  profilePicture: string;
+  profilePicture: string[];
   addresses: IAddress[];
-  cart: ICartItem[];
-  orderHistory: IOrderSummary[];
   createdAt?: Date;
   updatedAt?: Date;
   resetToken?: String;
@@ -31,7 +29,11 @@ interface IAddress {
   country: string;
   phone?: string;
 }
-
+interface IWish extends Document {
+  _id: mongoose.Types.ObjectId;
+  cart: ICartItem[];
+  orderHistory: IOrderSummary[];
+}
 interface IOrderSummary {
   orderId: mongoose.Types.ObjectId;
   total: number;
@@ -43,7 +45,6 @@ interface ICartItem {
   product: mongoose.Types.ObjectId;
   quantity: number;
 }
-
 
 // Category type definition (parent)
 interface ICategory {
@@ -102,5 +103,6 @@ export {
   IPrice,
   IProductDocument,
   ICategory,
-  ISubcategory
+  ISubcategory,
+  IWish
 }
