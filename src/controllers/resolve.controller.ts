@@ -1,6 +1,7 @@
 // utils/crudFactory.ts
 import { Request, Response, NextFunction } from "express";
 import { Model } from "mongoose";
+import { ICartItem, IWish } from "../types/type";
 type AllowedPopulate = "category" | "subcategory" | "User" | "Option";
 
 type CRUDHandlers<T> = {
@@ -63,18 +64,29 @@ export function createCrudController<T>(
         // Update document
         async update(req, res, next) {
             try {
-                const isExist = await model.findById(req.params.id);
+                console.log("received data:", req.body)
+                const isExist = await model.findById(req.params.id) as Partial<IWish> | null;
+                console.log("exist:", isExist)
                 if (!isExist) {
-                     await model.create(req.body)
+                    await model.create(req.body)
                         .then((data) => {
                             res.status(201).json({ success: true, data });
                         })
                         .catch((error) => {
                             next(error);
                         });
-                        return;
+                    return;
                 }
-
+                if (req.body.cart) {
+                   let oldValue = isExist.cart
+                   if (!oldValue) {
+                       oldValue = [];
+                   }
+                    oldValue.push(...req.body.cart);
+                   await model.findByIdAndUpdate(req.params.id, { cart: oldValue }, { new: true });
+                     res.json({ success: true, data: oldValue });
+                     return;
+                }
                 const data = await model.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
                 if (!data) {
